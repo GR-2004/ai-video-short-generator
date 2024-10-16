@@ -16,19 +16,19 @@ const SideNav = () => {
     {
       id: 2,
       name: "Create New",
-      path: "/create-new",
+      path: "/dashboard/create-new",
       icon: FileVideo,
     },
     {
       id: 3,
       name: "Upgrade",
-      path: "/upgrade",
+      path: "/dashboard/upgrade",
       icon: ShieldPlus,
     },
     {
       id: 4,
       name: "Account",
-      path: "/account",
+      path: "/dashboard/account",
       icon: CircleUser,
     },
   ];
