@@ -16,6 +16,8 @@ const SelectTopic = ({ onUserSelect }) => {
     "Horror Story",
     "Historical Facts",
     "Bed Time Story",
+    "Fun Facts",
+    "Motivational"
   ];
   const [selectedOption, setSelectedOption] = useState();
   return (

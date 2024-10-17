@@ -14,7 +14,6 @@ const SelectDuration = ({onUserSelect}) => {
       <p className="text-gray-500">Select the duration of your video</p>
       <Select
         onValueChange={(value) => {
-          setSelectedOption(value);
           onUserSelect("duration", value);
         }}
       >
