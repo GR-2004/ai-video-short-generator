@@ -6,11 +6,13 @@ import SelectDuration from "./_components/SelectDuration";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import CustomLoading from "./_components/CustomLoading";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateNewPage = () => {
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [videoScript, setVideoScript] = useState();
+  const [audioFileUrl, setAudioFileUrl] = useState();
 
   const onHandleInputChange = (fieldName, fieldValue) => {
     setFormData((prev) => ({
@@ -33,6 +35,26 @@ const CreateNewPage = () => {
       .then((resp) => {
         console.log(resp.data.result);
         setVideoScript(resp.data.result);
+        GenerateAudioFile(resp.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setLoading(false);
+  };
+
+  const GenerateAudioFile = async (videoScriptData) => {
+    setLoading(true);
+    let script = "";
+    const id = uuidv4();
+    videoScriptData.forEach((item) => {
+      script = script + item.ContentText + " ";
+    });
+    await axios
+      .post("/api/generate-audio", { text: script, id: id })
+      .then((resp) => {
+        setAudioFileUrl(resp.data.result)
+        console.log(resp);
       })
       .catch((error) => {
         console.log(error);
