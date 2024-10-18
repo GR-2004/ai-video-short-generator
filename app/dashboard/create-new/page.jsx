@@ -13,6 +13,7 @@ const CreateNewPage = () => {
   const [loading, setLoading] = useState(false);
   const [videoScript, setVideoScript] = useState();
   const [audioFileUrl, setAudioFileUrl] = useState();
+  const [captions, setCaptions] = useState();
 
   const onHandleInputChange = (fieldName, fieldValue) => {
     setFormData((prev) => ({
@@ -22,7 +23,11 @@ const CreateNewPage = () => {
   };
 
   const handleClick = () => {
-    GetVideoScript();
+    // GetVideoScript();
+
+    //testing
+    const fileUrl = "https://firebasestorage.googleapis.com/v0/b/ai-video-generator-e5638.appspot.com/o/ai-short-video%2Fc26779f3-89d9-491d-bb99-18d6ed2c5f45.mp3?alt=media&token=a4294a29-cd20-4c18-9bee-5e2caa7d9a8e"
+    GenerateAudioCaption(fileUrl)
   };
 
   //Get Video Script
@@ -33,7 +38,6 @@ const CreateNewPage = () => {
     const result = await axios
       .post("/api/get-video-script", { prompt })
       .then((resp) => {
-        console.log(resp.data.result);
         setVideoScript(resp.data.result);
         GenerateAudioFile(resp.data.result);
       })
@@ -43,6 +47,7 @@ const CreateNewPage = () => {
     setLoading(false);
   };
 
+  //Generate audio file
   const GenerateAudioFile = async (videoScriptData) => {
     setLoading(true);
     let script = "";
@@ -54,13 +59,24 @@ const CreateNewPage = () => {
       .post("/api/generate-audio", { text: script, id: id })
       .then((resp) => {
         setAudioFileUrl(resp.data.result)
-        console.log(resp);
       })
       .catch((error) => {
         console.log(error);
       });
     setLoading(false);
   };
+
+  //Generate audio caption 
+  const GenerateAudioCaption = async (fileUrl) => {
+    setLoading(true);
+
+    await axios.post("/api/generate-caption", {audioFileUrl: fileUrl}).then(resp => {
+      setCaptions(resp.data.result);
+    }).catch(error => {
+      console.log(error);
+    })
+    setLoading(false);
+  }
 
   return (
     <div className="md:px-20">
